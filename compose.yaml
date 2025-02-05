@@ -1,0 +1,18 @@
+name: rust-template
+services:
+  api:
+    container_name: api
+    build:
+      context: .
+      target: main
+      dockerfile: Dockerfile
+    image: registry.quantdevlabs.com/somedir/api:latest
+    # depends_on:      
+    #   - database
+    # environment:
+    #   - PG_HOST=database
+    env_file:
+      - .env
+    # networks:
+    #   - database
+
