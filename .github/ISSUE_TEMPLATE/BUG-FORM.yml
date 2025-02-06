@@ -27,12 +27,12 @@ body:
           options:
               - label: Rust API Template
               - label: Rust API Library
-    # - type: input
-    #   attributes:
-    #       label: What version of xxx are you on?
-    #       placeholder: "Run xxx --version and paste the output here"
-    #   validations:
-    #       required: true
+    - type: input
+      attributes:
+          label: What version of rust-api-template are you on?
+          placeholder: "Run rust-api-template --version and paste the output here"
+      validations:
+          required: true
     - type: dropdown
       attributes:
           label: Operating System

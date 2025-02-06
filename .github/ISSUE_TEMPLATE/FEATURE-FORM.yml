@@ -7,7 +7,7 @@ body:
           value: |
               Please ensure that this feature has not already been requested in the issue tracker.
 
-              Thanks for taking the time to help improve Rust-API-template!
+              Thanks for taking the time to help improve Rust API template!
     - type: dropdown
       attributes:
           label: Component
