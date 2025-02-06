@@ -21,7 +21,7 @@ pub async fn bind_metrics(handle: Handle, host: IpAddr, port: u16) -> Result<(),
             let router = Router::new().route("/metrics", get(move || ready(rh.render())));
             let addr = SocketAddr::from((host, port));
 
-            info!("listening for metrics http on {host}:{port}");
+            info!("Listening for metrics http on {host}:{port}");
 
             // Bind the http server address and serve the router
             axum_server::bind(addr)

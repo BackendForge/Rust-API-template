@@ -1,18 +1,35 @@
-name: rust-template
+name: rust-api-template
 services:
   api:
-    container_name: api
+    container_name: api-template
     build:
       context: .
       target: main
       dockerfile: Dockerfile
-    image: registry.quantdevlabs.com/somedir/api:latest
-    # depends_on:      
-    #   - database
-    # environment:
-    #   - PG_HOST=database
+    image: registry.quantdevlabs.com/open-source/rust-api-template:latest
+    restart: unless-stopped
+    ports: # used to expose the ports to the host
+      - "127.0.0.1:${HTTP_PORT:-8080}:${HTTP_PORT:-8080}"
+      - "127.0.0.1:${HTTPS_PORT:-8081}:${HTTPS_PORT:-8081}"
+      - "${METRICS_HOST:-127.0.0.1}:${METRICS_PORT:-9090}:${METRICS_PORT:-9090}"
+    expose: # used to expose the ports to other docker services
+      - "${HTTP_PORT:-8080}/tcp"    
+      - "${HTTPS_PORT:-8081}/tcp" 
+      - "${METRICS_PORT:-9090}/tcp" 
     env_file:
-      - .env
+      - .env    
+    logging:
+      driver: "syslog" # Choose your desired logging driver, like json-file
+      # options: # (json-file)
+      #   max-size: "50m" # Set the maximum size for each log file
+      #   max-file: "5" # Set the maximum number of log files to retain  
+    # environment:
+    #   - PG_HOST=database        
+    # depends_on: 
+    #   - database
     # networks:
     #   - database
 
+# networks:
+#   database:
+#     external: true

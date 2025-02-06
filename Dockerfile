@@ -4,6 +4,11 @@ WORKDIR /app
 COPY Cargo.toml .
 COPY src ./src
 RUN cargo build --release
+COPY certs /certs
+COPY keys /keys
+RUN chown -R nobody:nogroup /certs /keys
+RUN chmod -R 600 /keys
+RUN chmod -R 644 /certs
 
 FROM alpine:latest AS upx
 RUN apk add --no-cache libc6-compat cmake make gcc g++ musl-dev busybox-extras git
@@ -20,9 +25,12 @@ RUN ./build/release/upx --lzma -o /usr/api-min-sized /usr/api
 
 # Stage for the API application
 FROM gcr.io/distroless/cc:latest AS main
-# COPY --from=builder /app/target/release/api /bin/api
-COPY --from=compress /usr/api-min-sized /bin/api
+# COPY --from=builder /app/target/release/api /usr/api
+COPY --from=compress /usr/api-min-sized /usr/api
+COPY --from=builder /certs /certs
+COPY --from=builder /keys /keys
 EXPOSE ${HTTP_PORT}
 EXPOSE ${HTTPS_PORT}
+EXPOSE ${METRICS_PORT}
 USER nobody
-ENTRYPOINT ["/bin/api"]
+ENTRYPOINT ["/usr/api"]

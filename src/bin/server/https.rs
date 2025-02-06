@@ -56,7 +56,7 @@ fn make_https(host: String, uri: Uri, http: u16, https: u16) -> Result<Uri, BoxE
 /// The logic function fo the http -> https redirect route
 async fn redirect_http(handle: Handle, args: Args, tls_port: u16) -> Result<(), io::Error> {
     // Create the https listening route
-    let addr = SocketAddr::from((args.host(), tls_port));
+    let addr = SocketAddr::from((args.host(), args.port()));
 
     // Bind the redirect method as a route element
     let redirect = move |Host(host): Host, uri: Uri| async move {
@@ -64,13 +64,12 @@ async fn redirect_http(handle: Handle, args: Args, tls_port: u16) -> Result<(), 
             Ok(uri) => Ok(Redirect::permanent(&uri.to_string())),
             Err(err) => {
                 tracing::warn!(%err, "failed to convert URI to HTTPS");
-
                 Err(axum::http::StatusCode::BAD_REQUEST)
             }
         }
     };
 
-    info!("listening for http on port: {}", addr.port());
+    info!("Listening for http on port: {}", addr.port());
 
     // Start the http server that will automatically redirect all trafic to the https endpoint
     axum_server::bind(addr)

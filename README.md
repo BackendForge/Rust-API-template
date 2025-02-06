@@ -4,6 +4,8 @@ Project template for a Rust API server. This template is designed to be a starti
 
 ## Pre-requisites
 
+On Linux systems, you may need to install the following dependencies:
+
 ```bash
 apt install libssl-dev
 ```
@@ -13,6 +15,8 @@ Whenever submodules are added, updated or removed, the following command should 
 ```bash
 git submodule update --init
 ```
+
+Currently there are no submodules.
 
 ## Server binaries
 
@@ -24,7 +28,7 @@ RUSTFLAGS="-Zlocation-detail=none" cargo +nightly build --release --bin api -j $
 cargo build --release -j $(nproc)
 ```
 
-Compress binaries using [UPX](https://github.com/upx/upx)
+Compress binaries using [UPX](https://github.com/upx/upx), if needed
 
 ```bash
 upx --best --lzma target/release/min-sized-rust
@@ -50,7 +54,15 @@ docker compose build --remove-orphans
 ### Run container (detached)
 
 ```bash
-docker composeRust API template
+docker compose up -d
+```
+
+### Run and build container attached
+
+```bash
+docker compose up --build --remove-orphans
+```
+
 ### Run server
 
 ```bash
@@ -87,3 +99,10 @@ git merge upstream/main
 ## License
 
 This project is licensed under the GPL-3.0 License - see the [LICENSE](LICENSE) file for details.
+
+## TODO
+
+- [ ] Add database library
+- [ ] Add tests
+- [ ] Add benchmarking
+- [ ] Add CI/CD

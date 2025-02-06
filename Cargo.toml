@@ -2,7 +2,7 @@
 name = "rust-api-template"
 version = "0.1.0"
 edition = "2021"
-authors = ["AlphaDragon"]
+authors = ["BackendForge"]
 
 [dependencies]
 log = "0.4"

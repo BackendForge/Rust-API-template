@@ -8,7 +8,7 @@ use tracing::info;
 pub async fn bind(args: Args, handle: Handle, router: Router) -> Result<(), io::Error> {
     let addr = SocketAddr::from((args.host(), args.port()));
 
-    info!("listening for http on port: {}", addr.port());
+    info!("Listening for http on port: {}", addr.port());
 
     // Bind the http server address and serve the router
     axum_server::bind(addr)
