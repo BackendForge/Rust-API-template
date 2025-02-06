@@ -102,6 +102,8 @@ This project is licensed under the GPL-3.0 License - see the [LICENSE](LICENSE) 
 
 ## TODO
 
+- [ ] Add DOCS and examples for everything
+- [ ] dynamic handling of different log levels
 - [ ] Add database library
 - [ ] Add tests
 - [ ] Add benchmarking

@@ -17,7 +17,7 @@ pub async fn handle_authentication(
         let secret = auth_header.to_str().unwrap_or("");
 
         // XXX:
-        // based on "_token", get a valid secret token from the database?
+        // based on "secret", get a valid secret token from the database?
         // some protection against timing attacks?
         // some protection for the token data -> token is checked with the database
         // based on that token, get the sha-256 of secret token, for its pair in the DB & user basic data

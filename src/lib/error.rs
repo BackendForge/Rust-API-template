@@ -35,6 +35,12 @@ pub enum ServerError {
     Os(OsString),
 }
 
+impl ServerError {
+    pub fn status_code(&self) -> StatusCode {
+        StatusCode::INTERNAL_SERVER_ERROR
+    }
+}
+
 impl From<OsString> for ServerError {
     fn from(value: OsString) -> Self {
         ServerError::Os(value)
@@ -45,7 +51,7 @@ impl IntoResponse for ServerError {
     fn into_response(self) -> axum::response::Response {
         log::error!("{self:#?}");
 
-        (StatusCode::INTERNAL_SERVER_ERROR, self).into_response()
+        (self.status_code(), self).into_response()
     }
 }
 
@@ -82,18 +88,30 @@ where
     }
 }
 
+impl Error {
+    pub fn status_code(&self) -> StatusCode {
+        match self {
+            Error::UserAlreadyExists => StatusCode::CONFLICT,
+            Error::InvalidSystemId => StatusCode::BAD_REQUEST,
+            Error::InputInvalid => StatusCode::BAD_REQUEST,
+            Error::InputDoesNotExist => StatusCode::NOT_FOUND,
+            Error::MetricsError => StatusCode::INTERNAL_SERVER_ERROR,
+            Error::Unauthorized => StatusCode::UNAUTHORIZED,
+            Error::Server(err) => err.status_code(),
+        }
+    }
+}
+
 impl IntoResponse for Error {
     fn into_response(self) -> axum::response::Response {
         log::error!("{self:#?}");
 
         match self {
-            // RestError::NotFound => (StatusCode::NOT_FOUND, self).into_response(),
-            // RestError::Unauthorized => StatusCode::UNAUTHORIZED,
-            // RestError::BadRequest(_) => StatusCode::BAD_REQUEST,
-            // RestError::InternalServerError => StatusCode::INTERNAL_SERVER_ERROR,
-            // RestError::Other(_) => StatusCode::INTERNAL_SERVER_ERROR,
             Error::Server(err) => err.into_response(),
-            err => (StatusCode::BAD_REQUEST, err).into_response(),
+            err => {
+                let status_code = err.status_code();
+                (status_code, err.to_string()).into_response()
+            }
         }
     }
 }
