@@ -20,12 +20,12 @@ RUN make
 
 FROM upx AS compress
 WORKDIR /usr/upx
-COPY --from=builder /app/target/release/api /usr/api
+COPY --from=builder /app/target/release/rust-api-template /usr/api
 RUN ./build/release/upx --lzma -o /usr/api-min-sized /usr/api
 
 # Stage for the API application
 FROM gcr.io/distroless/cc:latest AS main
-# COPY --from=builder /app/target/release/api /usr/api
+# COPY --from=builder /app/target/release/rust-api-template /usr/api
 COPY --from=compress /usr/api-min-sized /usr/api
 COPY --from=builder /certs /certs
 COPY --from=builder /keys /keys

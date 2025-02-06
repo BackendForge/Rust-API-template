@@ -66,14 +66,14 @@ docker compose up --build --remove-orphans
 ### Run server
 
 ```bash
-cargo run --bin api
+cargo run --bin rust-api-template
 ```
 
 ## Live development
 
 ```bash
 cargo doc --open
-cargo watch -p api -x "run --bin api"
+cargo watch -p api -x "run --bin rust-api-template"
 ```
 
 ### Generate documentation

@@ -41,7 +41,7 @@ hex = "0.4.3"
 futures-util = "0.3.31"
 
 [[bin]]
-name = "api"
+name = "rust-api-template"
 path = "src/bin/main.rs"
 
 [lib]
